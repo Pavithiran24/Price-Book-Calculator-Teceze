@@ -89,53 +89,53 @@ All colors MUST be HSL for consistent theming
   }
 
   .dark {
-    /* Dark theme - Premium dark palette */
-    --background: 240 10% 4%;
-    --foreground: 240 5% 98%;
+  /* Dark theme - Premium dark palette (lighter) */
+  --background: 240 10% 12%;
+  --foreground: 240 5% 98%;
 
-    --card: 240 10% 6%;
-    --card-foreground: 240 5% 98%;
+  --card: 240 10% 16%;
+  --card-foreground: 240 5% 98%;
 
-    --popover: 240 10% 6%;
-    --popover-foreground: 240 5% 98%;
+  --popover: 240 10% 16%;
+  --popover-foreground: 240 5% 98%;
 
-    --primary: 240 100% 60%;
-    --primary-foreground: 240 10% 4%;
-    --primary-soft: 240 100% 8%;
-    --primary-hover: 240 100% 65%;
+  --primary: 240 100% 60%;
+  --primary-foreground: 240 10% 4%;
+  --primary-soft: 240 100% 18%;
+  --primary-hover: 240 100% 65%;
 
-    --secondary: 240 10% 10%;
-    --secondary-foreground: 240 5% 98%;
+  --secondary: 240 10% 18%;
+  --secondary-foreground: 240 5% 98%;
 
-    --muted: 240 10% 10%;
-    --muted-foreground: 240 5% 65%;
+  --muted: 240 10% 18%;
+  --muted-foreground: 240 5% 65%;
 
-    --accent: 217 91% 60%;
-    --accent-foreground: 240 10% 4%;
-    --accent-soft: 217 91% 8%;
+  --accent: 217 91% 60%;
+  --accent-foreground: 240 10% 4%;
+  --accent-soft: 217 91% 18%;
 
-    --success: 142 76% 45%;
-    --success-foreground: 240 10% 4%;
-    --success-soft: 142 76% 8%;
+  --success: 142 76% 45%;
+  --success-foreground: 240 10% 4%;
+  --success-soft: 142 76% 18%;
 
-    --warning: 38 92% 55%;
-    --warning-foreground: 240 10% 4%;
-    --warning-soft: 38 92% 8%;
+  --warning: 38 92% 55%;
+  --warning-foreground: 240 10% 4%;
+  --warning-soft: 38 92% 18%;
 
-    --destructive: 0 84% 65%;
-    --destructive-foreground: 240 10% 4%;
+  --destructive: 0 84% 65%;
+  --destructive-foreground: 240 10% 4%;
 
-    --border: 240 10% 15%;
-    --input: 240 10% 15%;
-    --ring: 240 100% 60%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+  --border: 240 10% 22%;
+  --input: 240 10% 22%;
+  --ring: 240 100% 60%;
+  --sidebar-background: 240 5.9% 18%;
+  --sidebar-foreground: 240 4.8% 95.9%;
+  --sidebar-primary: 224.3 76.3% 54%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 240 3.7% 22.9%;
+  --sidebar-accent-foreground: 240 4.8% 95.9%;
+  --sidebar-border: 240 3.7% 22.9%;
+  --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
 

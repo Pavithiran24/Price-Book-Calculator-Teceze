@@ -39,10 +39,10 @@ const Index = () => {
       setShowWelcome(true);
     }, 500);
 
-    // Auto hide after 3 seconds
+    // Auto hide after 5 seconds
     const hideTimer = setTimeout(() => {
       setShowWelcome(false);
-    }, 3500);
+    }, 5500);
 
     return () => {
       clearTimeout(timer);
@@ -160,9 +160,9 @@ const Index = () => {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <Badge variant="outline" className="hidden sm:flex">
+              {/* <Badge variant="outline" className="hidden sm:flex">
                 v1.0.0
-              </Badge>
+              </Badge> */}
               <ThemeToggle />
             </div>
           </div>

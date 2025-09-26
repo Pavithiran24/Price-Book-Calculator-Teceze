@@ -6,9 +6,10 @@ export const ThemeToggle = () => {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' || 'light';
-    setTheme(savedTheme);
-    document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark';
+    const initialTheme = savedTheme || 'light';
+    setTheme(initialTheme);
+    document.documentElement.classList.toggle('dark', initialTheme === 'dark');
   }, []);
 
   const toggleTheme = () => {
@@ -21,12 +22,13 @@ export const ThemeToggle = () => {
   return (
     <Button
       variant="outline"
-      size="icon"
+      size="default"
       onClick={toggleTheme}
-      className="relative h-10 w-10 rounded-lg border-border/50 hover:bg-accent/10 transition-all duration-300"
+      className="flex items-center gap-2 px-6 py-2 rounded-full border-2 border-gray-300 shadow-md bg-white dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 focus:ring-2 focus:ring-blue-200 dark:focus:ring-purple-700"
     >
-      <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-      <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+      <Sun className={`h-6 w-6 transition-all duration-300 ${theme === 'light' ? 'text-yellow-400' : 'text-gray-400'}`} />
+      <span className={`font-bold text-base transition-all duration-300 ${theme === 'light' ? 'text-gray-700' : 'text-gray-200'}`}>{theme === 'light' ? 'Light' : 'Dark'}</span>
+      <Moon className={`h-6 w-6 transition-all duration-300 ${theme === 'dark' ? 'text-purple-400' : 'text-gray-400'}`} />
       <span className="sr-only">Toggle theme</span>
     </Button>
   );

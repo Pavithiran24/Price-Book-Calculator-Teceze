@@ -44,30 +44,35 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({ data, headers, o
   const [distance, setDistance] = useState('0');
   const [isOutOfHours, setIsOutOfHours] = useState(false);
   const [isWeekendHoliday, setIsWeekendHoliday] = useState(false);
-
+  // New field for project duration
+  const [projectDuration, setProjectDuration] = useState('');
+  const projectDurationOptions = ['Short Term', 'Long Term'];
   // Derived data
   const [regions, setRegions] = useState<string[]>([]);
   const [countries, setCountries] = useState<string[]>([]);
   const [filteredData, setFilteredData] = useState<ExcelData[]>([]);
 
+  // Fixed region list
+  const regionList = [
+    'APAC',
+    'Europe',
+    'Latin America (LAM)',
+    'North America (NAM)',
+    'Africa',
+    'Middle East',
+    'North America (NAM) - Tier 1 Cities*',
+    'North America (NAM) - Other Cities'
+  ];
+
+  // Fixed country list
+  const countryList = [
+    "Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","The Bahamas","Bahrain","Bangladesh","Belarus","Belgium","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Cambodia","Cameroon","Canada","Central African Republic","Chile","China","Colombia","Comoros","Congo","Costa Rica","Côte d'Ivoire","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Dominican Republic","Ecuador","El Salvador","Equatorial Guinea","Egypt","Ethiopia","Fiji","Finland","France","The Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland","Grenada","Guadeloupe","Guatemala","Guernsey","Guinea","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jersey","Jordan","Kazakhstan","Kenya","Kuwait","Kyrgyzstan","Latvia","Lebanon","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macau","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Mauritius","Mayotte","Mexico","Moldova","Monaco","Mongolia","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Caledonia","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Puerto Rico","Qatar","Reunion","Romania","Russia","Rwanda","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States of America (Tier 1)","United States of America (Tier 2)","Uruguay","Uzbekistan","Vanuatu","Venezuela","Vietnam","Virgin Islands","Yemen","Zambia","Zimbabwe"
+  ];
+
   // Extract unique regions and countries from data
   useEffect(() => {
-    const regionColumn = headers.find(h => 
-      h.toLowerCase().includes('region') || h.toLowerCase().includes('area')
-    );
-    const countryColumn = headers.find(h => 
-      h.toLowerCase().includes('country') || h.toLowerCase().includes('location')
-    );
-
-    if (regionColumn) {
-      const uniqueRegions = [...new Set(data.map(row => row[regionColumn]).filter(Boolean))];
-      setRegions(uniqueRegions);
-    }
-
-    if (countryColumn) {
-      const uniqueCountries = [...new Set(data.map(row => row[countryColumn]).filter(Boolean))];
-      setCountries(uniqueCountries);
-    }
+    setRegions(regionList);
+    setCountries(countryList);
   }, [data, headers]);
 
   // Filter data based on selections
@@ -95,14 +100,9 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({ data, headers, o
     setFilteredData(filtered);
   }, [selectedRegion, selectedCountry, data, headers]);
 
-  const getServiceLevels = () => {
-    const serviceLevelColumns = headers.filter(h => 
-      h.toLowerCase().includes('l1') || h.toLowerCase().includes('l2') || 
-      h.toLowerCase().includes('l3') || h.toLowerCase().includes('l4') || 
-      h.toLowerCase().includes('l5') || h.toLowerCase().includes('level')
-    );
-    return serviceLevelColumns;
-  };
+  // Fixed service levels
+  const serviceLevels = ['L1', 'L2', 'L3', 'L4', 'L5'];
+  const getServiceLevels = () => serviceLevels;
 
   const getProjectTypes = () => {
     return ['Full Day', 'Half Day', 'Dispatch Ticket', 'Short Term Project', 'Long Term Project'];
@@ -305,6 +305,7 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({ data, headers, o
               </Select>
             </div>
           </div>
+
         </div>
 
         <Separator />
