@@ -1,0 +1,185 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Premium Price Book Calculator Design System 
+All colors MUST be HSL for consistent theming
+*/
+
+@layer base {
+  :root {
+    /* Base colors - Clean professional palette */
+    --background: 240 10% 98%;
+    --foreground: 240 10% 4%;
+
+    /* Card system */
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 4%;
+
+    /* Popover system */
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 4%;
+
+    /* Primary - Professional indigo */
+    --primary: 240 100% 27%;
+    --primary-foreground: 0 0% 100%;
+    --primary-soft: 240 60% 96%;
+    --primary-hover: 240 100% 32%;
+
+    /* Secondary - Elegant slate */
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 240 6% 10%;
+
+    /* Muted tones */
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 46%;
+
+    /* Accent - Professional blue */
+    --accent: 217 91% 60%;
+    --accent-foreground: 0 0% 100%;
+    --accent-soft: 217 91% 95%;
+
+    /* Success system */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+    --success-soft: 142 76% 95%;
+
+    /* Warning system */
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    --warning-soft: 38 92% 95%;
+
+    /* Destructive */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Border and inputs */
+    --border: 240 6% 90%;
+    --input: 240 6% 90%;
+    --ring: 240 100% 27%;
+
+    --radius: 0.75rem;
+
+    /* Premium gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-hover)));
+    --gradient-accent: linear-gradient(135deg, hsl(var(--accent)), hsl(217 91% 70%));
+    --gradient-surface: linear-gradient(135deg, hsl(var(--background)), hsl(var(--primary-soft)));
+
+    /* Shadows */
+    --shadow-soft: 0 1px 3px 0 hsl(var(--foreground) / 0.1), 0 1px 2px -1px hsl(var(--foreground) / 0.1);
+    --shadow-medium: 0 4px 6px -1px hsl(var(--foreground) / 0.1), 0 2px 4px -2px hsl(var(--foreground) / 0.1);
+    --shadow-large: 0 10px 15px -3px hsl(var(--foreground) / 0.1), 0 4px 6px -4px hsl(var(--foreground) / 0.1);
+    --shadow-premium: 0 20px 25px -5px hsl(var(--primary) / 0.1), 0 8px 10px -6px hsl(var(--primary) / 0.1);
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    /* Dark theme - Premium dark palette */
+    --background: 240 10% 4%;
+    --foreground: 240 5% 98%;
+
+    --card: 240 10% 6%;
+    --card-foreground: 240 5% 98%;
+
+    --popover: 240 10% 6%;
+    --popover-foreground: 240 5% 98%;
+
+    --primary: 240 100% 60%;
+    --primary-foreground: 240 10% 4%;
+    --primary-soft: 240 100% 8%;
+    --primary-hover: 240 100% 65%;
+
+    --secondary: 240 10% 10%;
+    --secondary-foreground: 240 5% 98%;
+
+    --muted: 240 10% 10%;
+    --muted-foreground: 240 5% 65%;
+
+    --accent: 217 91% 60%;
+    --accent-foreground: 240 10% 4%;
+    --accent-soft: 217 91% 8%;
+
+    --success: 142 76% 45%;
+    --success-foreground: 240 10% 4%;
+    --success-soft: 142 76% 8%;
+
+    --warning: 38 92% 55%;
+    --warning-foreground: 240 10% 4%;
+    --warning-soft: 38 92% 8%;
+
+    --destructive: 0 84% 65%;
+    --destructive-foreground: 240 10% 4%;
+
+    --border: 240 10% 15%;
+    --input: 240 10% 15%;
+    --ring: 240 100% 60%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}
+
+@layer components {
+  /* Premium component utilities */
+  .glass-card {
+    @apply backdrop-blur-sm bg-card/80 border-border/50;
+  }
+  
+  .premium-gradient {
+    background: var(--gradient-primary);
+  }
+  
+  .accent-gradient {
+    background: var(--gradient-accent);
+  }
+  
+  .surface-gradient {
+    background: var(--gradient-surface);
+  }
+  
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+  
+  .shadow-medium {
+    box-shadow: var(--shadow-medium);
+  }
+  
+  .shadow-large {
+    box-shadow: var(--shadow-large);
+  }
+  
+  .shadow-premium {
+    box-shadow: var(--shadow-premium);
+  }
+}
