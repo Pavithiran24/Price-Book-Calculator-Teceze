@@ -39,10 +39,10 @@ const Index = () => {
       setShowWelcome(true);
     }, 500);
 
-    // Auto hide after 5 seconds
+    // Auto hide after 2 seconds
     const hideTimer = setTimeout(() => {
       setShowWelcome(false);
-    }, 5500);
+    }, 2000);
 
     return () => {
       clearTimeout(timer);
