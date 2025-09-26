@@ -41,6 +41,10 @@ export const PriceSummary: React.FC<PriceSummaryProps> = ({ calculation, onReset
     const pageWidth = doc.internal.pageSize.width;
     let yPosition = 30;
 
+<<<<<<< HEAD
+=======
+    // Header
+>>>>>>> ca11d461cc573b14fabcac608bdb37a247665622
     doc.setFontSize(22);
     doc.setTextColor(40, 70, 200);
     doc.text('Price Book Calculator Summary', pageWidth / 2, yPosition, { align: 'center' });
