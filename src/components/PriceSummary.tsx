@@ -36,6 +36,7 @@ export const PriceSummary: React.FC<PriceSummaryProps> = ({ calculation, onReset
     }).format(amount);
   };
 
+    // PriceSummary component displays the calculation breakdown and total cost for the selected service configuration.
   const generatePDF = () => {
     const doc = new jsPDF();
     const pageWidth = doc.internal.pageSize.width;
