@@ -93,6 +93,8 @@ export const ExcelUpload: React.FC<ExcelUploadProps> = ({ onDataLoaded }) => {
     const file = e.target.files?.[0];
     if (file) {
       handleFileUpload(file);
+      // Reset input value to prevent double upload
+      e.target.value = '';
     }
   }, [handleFileUpload]);
 
