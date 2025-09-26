@@ -110,44 +110,44 @@ export const ExcelUpload: React.FC<ExcelUploadProps> = ({ onDataLoaded }) => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div
-          className="relative border-2 border-dashed border-border rounded-lg p-8 text-center hover:bg-accent-soft/30 transition-all duration-300 cursor-pointer"
-          onDrop={handleDrop}
-          onDragOver={(e) => e.preventDefault()}
-          onClick={() => document.getElementById('file-input')?.click()}
-        >
-          {uploadComplete ? (
-            <div className="animate-fade-in">
-              <Check className="h-12 w-12 text-success mx-auto mb-4" />
-              <p className="text-lg font-medium text-success">Upload Complete!</p>
-              <p className="text-sm text-muted-foreground mt-2">{fileName}</p>
-            </div>
-          ) : isUploading ? (
-            <div className="animate-premium-pulse">
-              <Upload className="h-12 w-12 text-primary mx-auto mb-4" />
-              <p className="text-lg font-medium">Processing file...</p>
-              <p className="text-sm text-muted-foreground mt-2">Please wait while we parse your data</p>
-            </div>
-          ) : (
-            <div>
-              <Upload className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-lg font-medium mb-2">Drop your Excel file here</p>
-              <p className="text-sm text-muted-foreground mb-4">or click to browse</p>
-              <Button variant="outline" className="mt-2">
-                Choose File
-              </Button>
-            </div>
-          )}
-          
-          <input
-            id="file-input"
-            type="file"
-            accept=".xlsx,.xls"
-            onChange={handleFileInput}
-            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-          />
-        </div>
-        
+        {uploadComplete ? (
+          <div className="animate-fade-in text-center p-8">
+            <Check className="h-12 w-12 text-success mx-auto mb-4" />
+            <p className="text-lg font-medium text-success">Upload Complete!</p>
+            <p className="text-sm text-muted-foreground mt-2">{fileName}</p>
+          </div>
+        ) : (
+          <div
+            className="relative border-2 border-dashed border-border rounded-lg p-8 text-center hover:bg-accent-soft/30 transition-all duration-300 cursor-pointer"
+            onDrop={handleDrop}
+            onDragOver={(e) => e.preventDefault()}
+            onClick={() => document.getElementById('file-input')?.click()}
+          >
+            {isUploading ? (
+              <div className="animate-premium-pulse">
+                <Upload className="h-12 w-12 text-primary mx-auto mb-4" />
+                <p className="text-lg font-medium">Processing file...</p>
+                <p className="text-sm text-muted-foreground mt-2">Please wait while we parse your data</p>
+              </div>
+            ) : (
+              <div>
+                <Upload className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-lg font-medium mb-2">Drop your Excel file here</p>
+                <p className="text-sm text-muted-foreground mb-4">or click to browse</p>
+                <Button variant="outline" className="mt-2">
+                  Choose File
+                </Button>
+              </div>
+            )}
+            <input
+              id="file-input"
+              type="file"
+              accept=".xlsx,.xls"
+              onChange={handleFileInput}
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            />
+          </div>
+        )}
         <div className="flex items-start gap-2 mt-4 p-3 bg-primary-soft rounded-lg">
           <AlertCircle className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
           <div className="text-sm">
