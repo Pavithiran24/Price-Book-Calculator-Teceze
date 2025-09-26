@@ -39,10 +39,10 @@ const Index = () => {
       setShowWelcome(true);
     }, 500);
 
-    // Auto hide after 2 seconds
+    // Auto hide after 3 seconds
     const hideTimer = setTimeout(() => {
       setShowWelcome(false);
-    }, 2000);
+    }, 3000);
 
     return () => {
       clearTimeout(timer);
@@ -219,13 +219,32 @@ const Index = () => {
                 </div>
 
                 {/* Calculator Form */}
-                {!calculation && (
-                  <div className="animate-slide-up">
-                    <CalculatorForm 
-                      data={excelData} 
-                      headers={headers} 
-                      onCalculationComplete={handleCalculationComplete}
-                    />
+                <div className="animate-slide-up">
+                  <CalculatorForm 
+                    data={excelData} 
+                    headers={headers} 
+                    onCalculationComplete={handleCalculationComplete}
+                  />
+                </div>
+                {/* Show calculated value below form if valid and not zero */}
+                {calculation && calculation.total > 0 && (
+                  <div className="mt-8 animate-fade-in">
+                    <div className="bg-gradient-to-br from-primary-soft via-accent-soft to-secondary-soft rounded-2xl p-8 shadow-xl border border-primary/30 flex flex-col items-center">
+                      <h3 className="text-2xl font-bold mb-2 text-primary">Total Cost</h3>
+                      <div className="text-5xl font-extrabold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4">
+                        ${calculation.total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      </div>
+                      <div className="w-full max-w-md mx-auto">
+                        <ul className="divide-y divide-border/30">
+                          {calculation.breakdown.map((item, idx) => (
+                            <li key={idx} className="py-2 flex justify-between items-center">
+                              <span className="font-medium text-muted-foreground">{item.label}</span>
+                              <span className="font-semibold text-primary">${item.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>

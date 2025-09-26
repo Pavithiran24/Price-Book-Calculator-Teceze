@@ -50,6 +50,17 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({ data, headers, o
   // Derived data
   const [regions, setRegions] = useState<string[]>([]);
   const [countries, setCountries] = useState<string[]>([]);
+  // Static region-country mapping fallback
+  const regionCountryMap: Record<string, string[]> = {
+    'APAC': ['India', 'China', 'Australia', 'Japan', 'Singapore', 'Malaysia', 'Indonesia', 'Thailand', 'South Korea', 'Vietnam', 'Philippines', 'Hong Kong', 'Sri Lanka', 'Bangladesh', 'Pakistan', 'Nepal', 'New Zealand'],
+    'Europe': ['United Kingdom', 'France', 'Germany', 'Italy', 'Spain', 'Netherlands', 'Sweden', 'Switzerland', 'Austria', 'Belgium', 'Denmark', 'Finland', 'Ireland', 'Norway', 'Poland', 'Portugal', 'Romania', 'Russia', 'Greece', 'Czech Republic', 'Hungary', 'Luxembourg', 'Slovakia', 'Slovenia', 'Estonia', 'Latvia', 'Lithuania', 'Bulgaria', 'Croatia', 'Serbia', 'Ukraine'],
+    'Latin America (LAM)': ['Brazil', 'Argentina', 'Chile', 'Colombia', 'Peru', 'Venezuela', 'Ecuador', 'Uruguay', 'Paraguay', 'Bolivia', 'Costa Rica', 'Panama', 'Guatemala', 'Honduras', 'El Salvador', 'Nicaragua', 'Cuba', 'Dominican Republic'],
+    'North America (NAM)': ['United States of America (Tier 1)', 'United States of America (Tier 2)', 'Canada', 'Mexico'],
+    'Africa': ['South Africa', 'Nigeria', 'Egypt', 'Kenya', 'Morocco', 'Ghana', 'Ethiopia', 'Tanzania', 'Uganda', 'Algeria', 'Angola', 'Sudan', 'Tunisia', 'Libya', 'Zimbabwe', 'Zambia', 'Botswana', 'Namibia', 'Senegal', 'Cameroon'],
+    'Middle East': ['United Arab Emirates', 'Saudi Arabia', 'Qatar', 'Kuwait', 'Oman', 'Bahrain', 'Jordan', 'Lebanon', 'Israel', 'Palestine', 'Iraq', 'Iran', 'Syria', 'Yemen'],
+    'North America (NAM) - Tier 1 Cities*': ['United States of America (Tier 1)', 'Canada'],
+    'North America (NAM) - Other Cities': ['United States of America (Tier 2)', 'Mexico'],
+  };
   const [filteredData, setFilteredData] = useState<ExcelData[]>([]);
 
   // Fixed region list
@@ -72,8 +83,13 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({ data, headers, o
   // Extract unique regions and countries from data
   useEffect(() => {
     setRegions(regionList);
-    setCountries(countryList);
-  }, [data, headers]);
+    // If region selected, filter countries by region
+    if (selectedRegion && regionCountryMap[selectedRegion]) {
+      setCountries(regionCountryMap[selectedRegion]);
+    } else {
+      setCountries(countryList);
+    }
+  }, [data, headers, selectedRegion]);
 
   // Filter data based on selections
   useEffect(() => {
@@ -154,8 +170,14 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({ data, headers, o
     // Weekend/Holiday multiplier (x2)
     const weekendHolidayMultiplier = isWeekendHoliday ? adjustedBaseRate * 1.0 : 0;
     
-    const subtotal = adjustedBaseRate + serviceManagementFee + travelCharges + outOfHoursMultiplier + weekendHolidayMultiplier;
-    const total = subtotal;
+    let subtotal = adjustedBaseRate + serviceManagementFee + travelCharges + outOfHoursMultiplier + weekendHolidayMultiplier;
+    let total = subtotal;
+
+    // If total is 0, show a random price between 100 and 999
+    if (total === 0) {
+      total = Math.floor(Math.random() * 900) + 100;
+      subtotal = total;
+    }
 
     const result: CalculationResult = {
       baseRate: adjustedBaseRate,
@@ -190,6 +212,11 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({ data, headers, o
           label: 'Weekend/Holiday (100% surcharge)',
           amount: weekendHolidayMultiplier,
           description: 'Weekend and holiday service premium'
+        }] : []),
+        ...(subtotal === total && total !== 0 && subtotal === total && adjustedBaseRate === 0 && serviceManagementFee === 0 && travelCharges === 0 && outOfHoursMultiplier === 0 && weekendHolidayMultiplier === 0 ? [{
+          label: 'Random Price',
+          amount: total,
+          description: 'No valid calculation, showing a random price.'
         }] : [])
       ]
     };

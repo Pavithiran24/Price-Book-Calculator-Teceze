@@ -118,10 +118,9 @@ export const ExcelUpload: React.FC<ExcelUploadProps> = ({ onDataLoaded }) => {
           </div>
         ) : (
           <div
-            className="relative border-2 border-dashed border-border rounded-lg p-8 text-center hover:bg-accent-soft/30 transition-all duration-300 cursor-pointer"
+            className="relative border-2 border-dashed border-border rounded-lg p-8 text-center hover:bg-accent-soft/30 transition-all duration-300"
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
-            onClick={() => document.getElementById('file-input')?.click()}
           >
             {isUploading ? (
               <div className="animate-premium-pulse">
@@ -136,16 +135,26 @@ export const ExcelUpload: React.FC<ExcelUploadProps> = ({ onDataLoaded }) => {
                 <p className="text-sm text-muted-foreground mb-4">or click to browse</p>
                 <Button variant="outline" className="mt-2">
                   Choose File
+                  <input
+                    id="file-input"
+                    type="file"
+                    accept=".xlsx,.xls"
+                    onChange={handleFileInput}
+                    className="absolute left-0 top-0 w-full h-full opacity-0 cursor-pointer"
+                    style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', opacity: 0, cursor: 'pointer' }}
+                  />
                 </Button>
               </div>
             )}
-            <input
-              id="file-input"
-              type="file"
-              accept=".xlsx,.xls"
-              onChange={handleFileInput}
-              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-            />
+            {!uploadComplete && (
+              <input
+                id="file-input"
+                type="file"
+                accept=".xlsx,.xls"
+                onChange={handleFileInput}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              />
+            )}
           </div>
         )}
         <div className="flex items-start gap-2 mt-4 p-3 bg-primary-soft rounded-lg">
