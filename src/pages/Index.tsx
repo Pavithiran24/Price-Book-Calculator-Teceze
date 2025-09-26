@@ -160,9 +160,9 @@ const Index = () => {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <Badge variant="outline" className="hidden sm:flex">
+              {/* <Badge variant="outline" className="hidden sm:flex">
                 v1.0.0
-              </Badge>
+              </Badge> */}
               <ThemeToggle />
             </div>
           </div>

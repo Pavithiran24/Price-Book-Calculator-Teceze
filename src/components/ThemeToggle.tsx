@@ -23,10 +23,11 @@ export const ThemeToggle = () => {
       variant="outline"
       size="icon"
       onClick={toggleTheme}
-      className="relative h-10 w-10 rounded-lg border-border/50 hover:bg-accent/10 transition-all duration-300"
+      className="relative h-12 w-12 rounded-full border-2 border-primary shadow-lg bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 hover:from-pink-400 hover:to-blue-400 hover:shadow-2xl transition-all duration-500 focus:ring-4 focus:ring-blue-300 dark:focus:ring-purple-800"
     >
-      <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-      <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+      <span className="absolute inset-0 rounded-full pointer-events-none animate-pulse bg-gradient-to-br from-blue-400/30 via-purple-400/30 to-pink-400/30 blur-sm"></span>
+      <Sun className="relative h-6 w-6 rotate-0 scale-100 transition-all duration-500 dark:-rotate-90 dark:scale-0 text-yellow-400 drop-shadow-lg" />
+      <Moon className="absolute h-6 w-6 rotate-90 scale-0 transition-all duration-500 dark:rotate-0 dark:scale-100 text-purple-400 drop-shadow-lg" />
       <span className="sr-only">Toggle theme</span>
     </Button>
   );
