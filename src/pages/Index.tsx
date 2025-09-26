@@ -28,6 +28,7 @@ interface CalculationResult {
 }
 
 const Index = () => {
+// Index page: Main entry for Price Book Calculator app. Handles Excel upload, calculation, and UI layout.
   const [excelData, setExcelData] = useState<ExcelData[]>([]);
   const [headers, setHeaders] = useState<string[]>([]);
   const [calculation, setCalculation] = useState<CalculationResult | null>(null);
