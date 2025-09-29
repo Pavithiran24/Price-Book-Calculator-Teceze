@@ -16,31 +16,57 @@ interface CalculationResult {
   weekendHolidayMultiplier: number;
   subtotal: number;
   total: number;
-  breakdown: {
-    label: string;
-    amount: number;
-    description: string;
-  }[];
+    breakdown: {
+      label: string;
+      amount: number;
+      description: string;
+    }[];
 }
 
+
+import type { CurrencyCode } from './CurrencySwitcher';
 
 interface PriceSummaryProps {
   calculation: CalculationResult;
   onReset: () => void;
   language?: 'en' | 'ta' | 'si';
+  currency?: CurrencyCode;
 }
 
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 
-export const PriceSummary: React.FC<PriceSummaryProps> = ({ calculation, onReset, language = 'en' }) => {
+export const PriceSummary: React.FC<PriceSummaryProps> = ({ calculation, onReset, language = 'en', currency = 'USD' }) => {
+  // CSV Export
+  const exportCSV = () => {
+    const csvContent = [
+      ['Item', 'Amount', 'Description'],
+      ...breakdown.map(item => [
+        item.label,
+        item.amount.toFixed(2),
+        item.description
+      ]),
+      ['', '', ''],
+      ['Total', calculation.total.toFixed(2), '']
+    ];
+
+    const csvString = csvContent.map(row => 
+      row.map(field => `"${field}"`).join(',')
+    ).join('\n');
+
+    const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+    saveAs(blob, 'price-calculation-summary.csv');
+  };
   // Confetti state
   const [showConfetti, setShowConfetti] = useState(false);
   // Custom note (fixed, not editable)
   const customNote = 'Thank you for considering Teceze. For questions, contact us at info@teceze.com.';
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
+    let locale = 'en-US';
+    if (currency === 'EUR') locale = 'de-DE';
+    if (currency === 'GBP') locale = 'en-GB';
+    return new Intl.NumberFormat(locale, {
       style: 'currency',
-      currency: 'USD',
+      currency,
       minimumFractionDigits: 2,
     }).format(amount);
   };
@@ -57,7 +83,7 @@ export const PriceSummary: React.FC<PriceSummaryProps> = ({ calculation, onReset
     setBreakdown(items);
   };
 
-    // PriceSummary component displays the calculation breakdown and total cost for the selected service configuration.
+  // PDF Export
   const generatePDF = async () => {
     const doc = new jsPDF();
     const pageWidth = doc.internal.pageSize.width;
@@ -145,26 +171,6 @@ export const PriceSummary: React.FC<PriceSummaryProps> = ({ calculation, onReset
     doc.save('price-calculation-summary.pdf');
     setShowConfetti(true);
     setTimeout(() => setShowConfetti(false), 2500);
-  };
-
-  const exportCSV = () => {
-    const csvContent = [
-      ['Item', 'Amount', 'Description'],
-  ...breakdown.map(item => [
-        item.label,
-        item.amount.toFixed(2),
-        item.description
-      ]),
-      ['', '', ''],
-      ['Total', calculation.total.toFixed(2), '']
-    ];
-
-    const csvString = csvContent.map(row => 
-      row.map(field => `"${field}"`).join(',')
-    ).join('\n');
-
-    const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
-    saveAs(blob, 'price-calculation-summary.csv');
   };
 
   return (
@@ -256,25 +262,28 @@ export const PriceSummary: React.FC<PriceSummaryProps> = ({ calculation, onReset
         <div className="flex flex-col sm:flex-row gap-3">
           <Button 
             onClick={generatePDF}
-            className="flex-1 premium-gradient text-white hover:opacity-90 transition-all duration-300"
+            className="flex-1 premium-gradient text-white hover:opacity-90 transition-all duration-300 px-3 py-2 text-sm sm:text-base sm:px-6 sm:py-3 rounded-lg sm:rounded-xl"
           >
-            <Download className="h-4 w-4 mr-2" />
-            Download PDF
+            <Download className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+            <span className="hidden xs:inline">Download PDF</span>
+            <span className="inline xs:hidden">PDF</span>
           </Button>
           <Button 
             onClick={exportCSV}
             variant="outline"
-            className="flex-1"
+            className="flex-1 px-3 py-2 text-sm sm:text-base sm:px-6 sm:py-3 rounded-lg sm:rounded-xl"
           >
-            <FileText className="h-4 w-4 mr-2" />
-            Export CSV
+            <FileText className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+            <span className="hidden xs:inline">Export CSV</span>
+            <span className="inline xs:hidden">CSV</span>
           </Button>
           <Button 
             onClick={onReset}
             variant="secondary"
-            className="flex-1"
+            className="flex-1 px-3 py-2 text-sm sm:text-base sm:px-6 sm:py-3 rounded-lg sm:rounded-xl"
           >
-            Calculate Again
+            <span className="hidden xs:inline">Calculate Again</span>
+            <span className="inline xs:hidden">Reset</span>
           </Button>
         </div>
 

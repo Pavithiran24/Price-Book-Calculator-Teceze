@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 // Handles Excel upload, calculation, and UI layout
 import { Calculator, FileSpreadsheet, Zap, Shield, X } from 'lucide-react';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { CurrencySwitcher, CurrencyCode } from '@/components/CurrencySwitcher';
 import { ExcelUpload } from '@/components/ExcelUpload';
 import { CalculatorForm } from '@/components/CalculatorForm';
 import { PriceSummary } from '@/components/PriceSummary';
@@ -44,6 +45,8 @@ const Index = () => {
   const [showWelcome, setShowWelcome] = useState(false);
   // State for language
   const [language, setLanguage] = useState<'en' | 'ta' | 'si'>('en');
+  // State for currency
+  const [currency, setCurrency] = useState<CurrencyCode>('USD');
 
   // Show welcome popup on component mount
   // Show welcome popup on mount, auto-hide after 3 seconds
@@ -140,21 +143,23 @@ const Index = () => {
       )}
 
   {/* Header - App title and theme toggle */}
-      <header className="border-b border-border/50 bg-card/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="bg-primary rounded-lg p-2">
+      <header className="border-b border-border/50 bg-card/80 backdrop-blur-sm sticky top-0 z-50 w-full">
+        <div className="container mx-auto px-2 py-2 sm:px-4 sm:py-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 w-full">
+            <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
+              <div className="bg-primary rounded-lg p-2 flex-shrink-0">
                 <Calculator className="h-6 w-6 text-primary-foreground" />
               </div>
-              <div>
-                <h1 className="text-xl font-bold">{translations[language].priceBookCalculator}</h1>
-                <p className="text-sm text-muted-foreground">{translations[language].professionalPricing}</p>
+              <div className="flex flex-col">
+                <h1 className="text-lg sm:text-xl font-bold leading-tight">{translations[language].priceBookCalculator}</h1>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-tight">{translations[language].professionalPricing}</p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <LanguageSwitcher language={language} setLanguage={setLanguage} languages={['en','ta','si']} />
-              <ThemeToggle />
+            <div className="flex flex-row items-center gap-1 sm:gap-3 w-full sm:w-auto justify-end">
+              <div className="flex flex-1 flex-row items-center gap-1 sm:gap-3 w-full sm:w-auto justify-end">
+                <LanguageSwitcher language={language} setLanguage={setLanguage} languages={['en','ta','si']} />
+                <ThemeToggle />
+              </div>
             </div>
           </div>
         </div>
@@ -247,6 +252,7 @@ const Index = () => {
                       calculation={calculation} 
                       onReset={handleReset}
                       language={language}
+                      currency={currency}
                     />
                   </div>
                 )}

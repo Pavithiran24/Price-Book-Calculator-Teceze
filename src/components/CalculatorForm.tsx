@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
+import { CurrencySwitcherInline, CurrencyCode } from './CurrencySwitcherInline';
 
 interface ExcelData {
   [key: string]: any;
@@ -25,6 +26,7 @@ interface CalculationResult {
     amount: number;
     description: string;
   }[];
+  currency?: string;
 }
 
 interface CalculatorFormProps {
@@ -44,8 +46,9 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({ data, headers, o
   const [distance, setDistance] = useState('0');
   const [isOutOfHours, setIsOutOfHours] = useState(false);
   const [isWeekendHoliday, setIsWeekendHoliday] = useState(false);
+  // Currency state (default USD)
+  const [currency, setCurrency] = useState<CurrencyCode>('USD');
   // New field for project duration
-  const [projectDuration, setProjectDuration] = useState('');
   const projectDurationOptions = ['Short Term', 'Long Term'];
   // Derived data
   const [regions, setRegions] = useState<string[]>([]);
@@ -228,9 +231,8 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({ data, headers, o
     if (!selectedRegion || !selectedCountry || !selectedServiceLevel || !projectType) {
       return;
     }
-    
-    const result = calculateTotal();
-    onCalculationComplete(result);
+    const calcResult = calculateTotal();
+    onCalculationComplete({ ...calcResult, currency });
   };
 
   const isFormValid = selectedRegion && selectedCountry && selectedServiceLevel && projectType && 
@@ -421,6 +423,7 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({ data, headers, o
         </div>
 
         <Separator />
+
 
         {/* Calculate Button */}
         <Button 
