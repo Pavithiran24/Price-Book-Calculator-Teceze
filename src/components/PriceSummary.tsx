@@ -23,12 +23,16 @@ interface CalculationResult {
   }[];
 }
 
+
 interface PriceSummaryProps {
   calculation: CalculationResult;
   onReset: () => void;
+  language?: 'en' | 'ta' | 'si';
 }
 
-export const PriceSummary: React.FC<PriceSummaryProps> = ({ calculation, onReset }) => {
+import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
+
+export const PriceSummary: React.FC<PriceSummaryProps> = ({ calculation, onReset, language = 'en' }) => {
   // Confetti state
   const [showConfetti, setShowConfetti] = useState(false);
   // Custom note (fixed, not editable)
@@ -39,6 +43,18 @@ export const PriceSummary: React.FC<PriceSummaryProps> = ({ calculation, onReset
       currency: 'USD',
       minimumFractionDigits: 2,
     }).format(amount);
+  };
+
+  // Drag-and-drop state for breakdown
+  const [breakdown, setBreakdown] = useState(calculation.breakdown);
+
+  // Handle drag end
+  const onDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+    const items = Array.from(breakdown);
+    const [reordered] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reordered);
+    setBreakdown(items);
   };
 
     // PriceSummary component displays the calculation breakdown and total cost for the selected service configuration.
@@ -75,25 +91,26 @@ export const PriceSummary: React.FC<PriceSummaryProps> = ({ calculation, onReset
     yPosition += 16;
 
     // Table Header
-    const col1 = 25;
-    const col2 = pageWidth / 2;
-    const col3 = pageWidth - 25;
+    const colPadding = 8;
+    const col1 = 28; // Item (left)
+    const col2 = pageWidth / 2 + 10; // Amount (right-aligned)
+    const col3 = pageWidth - 28; // Description (right)
     doc.setFontSize(14);
     doc.setFillColor(230, 240, 255);
     doc.rect(20, yPosition, pageWidth - 40, 10, 'F');
     doc.setTextColor(40, 70, 200);
     doc.text('Item', col1, yPosition + 7, { align: 'left' });
-    doc.text('Amount', col2, yPosition + 7, { align: 'center' });
+    doc.text('Amount', col2, yPosition + 7, { align: 'right' });
     doc.text('Description', col3, yPosition + 7, { align: 'right' });
     doc.setTextColor(0);
     yPosition += 14;
 
     // Table Rows
     doc.setFontSize(12);
-    calculation.breakdown.forEach((item) => {
-      doc.text(item.label, col1, yPosition, { align: 'left' });
-      doc.text(formatCurrency(item.amount), col2, yPosition, { align: 'center' });
-      doc.text(item.description || '', col3, yPosition, { align: 'right' });
+    breakdown.forEach((item) => {
+      doc.text(item.label, col1, yPosition, { align: 'left', maxWidth: col2 - col1 - colPadding });
+      doc.text(formatCurrency(item.amount), col2, yPosition, { align: 'right' });
+      doc.text(item.description || '', col3, yPosition, { align: 'right', maxWidth: col3 - col2 - colPadding });
       yPosition += 10;
     });
 
@@ -133,7 +150,7 @@ export const PriceSummary: React.FC<PriceSummaryProps> = ({ calculation, onReset
   const exportCSV = () => {
     const csvContent = [
       ['Item', 'Amount', 'Description'],
-      ...calculation.breakdown.map(item => [
+  ...breakdown.map(item => [
         item.label,
         item.amount.toFixed(2),
         item.description
@@ -174,27 +191,46 @@ export const PriceSummary: React.FC<PriceSummaryProps> = ({ calculation, onReset
             <FileText className="h-5 w-5 text-primary" />
             Cost Breakdown
           </h3>
-          
-          <div className="space-y-3">
-            {calculation.breakdown.map((item, index) => (
-              <div key={index} className="group">
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <p className="font-medium text-foreground">{item.label}</p>
-                    {item.description && (
-                      <p className="text-sm text-muted-foreground mt-1">{item.description}</p>
-                    )}
-                  </div>
-                  <p className="font-semibold text-right ml-4 group-hover:text-primary transition-colors">
-                    {formatCurrency(item.amount)}
-                  </p>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="breakdown-list">
+              {(provided) => (
+                <div
+                  className="space-y-3"
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                >
+                  {breakdown.map((item, index) => (
+                    <Draggable key={index} draggableId={index.toString()} index={index}>
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          className={`group bg-white dark:bg-gray-900 rounded transition-shadow ${snapshot.isDragging ? 'shadow-lg border-primary' : ''}`}
+                        >
+                          <div className="flex justify-between items-start">
+                            <div className="flex-1">
+                              <p className="font-medium text-foreground">{item.label}</p>
+                              {item.description && (
+                                <p className="text-sm text-muted-foreground mt-1">{item.description}</p>
+                              )}
+                            </div>
+                            <p className="font-semibold text-right ml-4 group-hover:text-primary transition-colors">
+                              {formatCurrency(item.amount)}
+                            </p>
+                          </div>
+                          {index < breakdown.length - 1 && (
+                            <Separator className="mt-3" />
+                          )}
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
                 </div>
-                {index < calculation.breakdown.length - 1 && (
-                  <Separator className="mt-3" />
-                )}
-              </div>
-            ))}
-          </div>
+              )}
+            </Droppable>
+          </DragDropContext>
         </div>
 
         <Separator className="my-6" />

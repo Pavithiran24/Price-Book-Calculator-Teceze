@@ -10,6 +10,8 @@ import { PriceSummary } from '@/components/PriceSummary';
 import { DataPreview } from '@/components/DataPreview';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { translations } from '@/lib/translations';
 
 interface ExcelData {
   [key: string]: any;
@@ -40,6 +42,8 @@ const Index = () => {
   const [calculation, setCalculation] = useState<CalculationResult | null>(null);
   // State for welcome popup
   const [showWelcome, setShowWelcome] = useState(false);
+  // State for language
+  const [language, setLanguage] = useState<'en' | 'ta' | 'si'>('en');
 
   // Show welcome popup on component mount
   // Show welcome popup on mount, auto-hide after 3 seconds
@@ -73,29 +77,11 @@ const Index = () => {
     setCalculation(null);
   };
 
-  // Feature list for the landing page
-  const features = [
-    {
-      icon: FileSpreadsheet,
-      title: 'Excel Integration',
-      description: 'Upload any Excel file and automatically extract pricing data',
-    },
-    {
-      icon: Calculator,
-      title: 'Dynamic Calculations',
-      description: 'Real-time pricing with fees, multipliers, and travel charges',
-    },
-    {
-      icon: Zap,
-      title: 'Premium Features',
-      description: 'PDF export, CSV download, and professional summaries',
-    },
-    {
-      icon: Shield,
-      title: 'Reliable & Secure',
-      description: 'Frontend-only processing ensures your data stays private',
-    },
-  ];
+  // Feature list for the landing page (from translations)
+  const features = translations[language].features.map((f, i) => ({
+    ...f,
+    icon: [FileSpreadsheet, Calculator, Zap, Shield][i],
+  }));
 
   // Main render
   return (
@@ -111,7 +97,6 @@ const Index = () => {
             >
               <X className="h-5 w-5 text-gray-600 dark:text-gray-300" />
             </button>
-            
             {/* Main popup content */}
             <div className="bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-blue-950 dark:via-gray-900 dark:to-purple-950 rounded-3xl p-12 shadow-2xl border-2 border-blue-200 dark:border-blue-800 animate-in zoom-in-95 duration-500 slide-in-from-bottom-10">
               {/* Welcome icon */}
@@ -119,26 +104,23 @@ const Index = () => {
                 <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mb-6 animate-bounce">
                   <span className="text-4xl">👋</span>
                 </div>
-                
                 {/* Title */}
                 <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent animate-pulse">
-                  Welcome Team! 🎉
+                  {translations[language].welcome}
                 </h1>
-                
                 {/* Message */}
                 <div className="space-y-4">
                   <p className="text-2xl md:text-3xl font-semibold text-gray-800 dark:text-gray-100">
                     This is <span className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-700 to-purple-700 bg-clip-text text-transparent">Pavithiran</span>
                   </p>
                   <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-200">
-                    Your new intern ✨
+                    {translations[language].intern}
                   </p>
                   <p className="text-lg text-gray-600 dark:text-gray-300 mt-4">
-                    Ready to revolutionize your pricing calculations!
+                    {translations[language].ready}
                   </p>
                 </div>
               </div>
-              
               {/* Decorative elements */}
               <div className="absolute top-4 left-4 text-blue-300 dark:text-blue-700 opacity-50">
                 <Calculator className="h-8 w-8" />
@@ -166,14 +148,12 @@ const Index = () => {
                 <Calculator className="h-6 w-6 text-primary-foreground" />
               </div>
               <div>
-                <h1 className="text-xl font-bold">Price Book Calculator</h1>
-                <p className="text-sm text-muted-foreground">Professional pricing made simple</p>
+                <h1 className="text-xl font-bold">{translations[language].priceBookCalculator}</h1>
+                <p className="text-sm text-muted-foreground">{translations[language].professionalPricing}</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              {/* <Badge variant="outline" className="hidden sm:flex">
-                v1.0.0
-              </Badge> */}
+              <LanguageSwitcher language={language} setLanguage={setLanguage} languages={['en','ta','si']} />
               <ThemeToggle />
             </div>
           </div>
@@ -185,13 +165,11 @@ const Index = () => {
         {excelData.length === 0 && (
           <div className="text-center mb-12 animate-fade-in">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Professional Price Book Calculator
+              {translations[language].priceBookCalculator}
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Upload your Excel price book, configure service parameters, and generate professional 
-              pricing quotes with detailed breakdowns and export capabilities.
+              {translations[language].uploadExcel}
             </p>
-            
             {/* Features Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
               {features.map((feature, index) => (
@@ -241,7 +219,7 @@ const Index = () => {
                 {calculation && calculation.total > 0 && (
                   <div className="mt-8 animate-fade-in">
                     <div className="bg-gradient-to-br from-primary-soft via-accent-soft to-secondary-soft rounded-2xl p-8 shadow-xl border border-primary/30 flex flex-col items-center">
-                      <h3 className="text-2xl font-bold mb-2 text-primary">Total Cost</h3>
+                      <h3 className="text-2xl font-bold mb-2 text-primary">{translations[language].totalCost}</h3>
                       <div className="text-5xl font-extrabold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4">
                         ${calculation.total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </div>
@@ -268,6 +246,7 @@ const Index = () => {
                     <PriceSummary 
                       calculation={calculation} 
                       onReset={handleReset}
+                      language={language}
                     />
                   </div>
                 )}
@@ -277,9 +256,9 @@ const Index = () => {
                   <Card className="border-dashed border-2 border-border/50">
                     <CardContent className="flex flex-col items-center justify-center py-12 text-center">
                       <Calculator className="h-12 w-12 text-muted-foreground mb-4" />
-                      <h3 className="text-lg font-semibold mb-2">Ready to Calculate</h3>
+                      <h3 className="text-lg font-semibold mb-2">{translations[language].readyToCalculate}</h3>
                       <p className="text-muted-foreground">
-                        Configure your service requirements in the form to generate a detailed price summary.
+                        {translations[language].configureService}
                       </p>
                     </CardContent>
                   </Card>
@@ -295,10 +274,11 @@ const Index = () => {
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">
             <p className="text-muted-foreground">
-              This website is built with React, TypeScript, and Tailwind CSS. Developed by <span className="text-blue-800 dark:text-blue-600 font-medium">Thevarasa Pavithiran</span>.
+              {translations[language].developedBy}
+              <span className="text-blue-800 dark:text-blue-600 font-medium">Thevarasa Pavithiran</span>.
             </p>
             <p className="text-sm text-muted-foreground mt-2">
-              All processing happens locally in your browser - your data never leaves your device.
+              {translations[language].privacy}
             </p>
           </div>
         </div>

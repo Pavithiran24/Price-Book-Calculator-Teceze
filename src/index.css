@@ -140,6 +140,27 @@ All colors MUST be HSL for consistent theming
   body {
     @apply bg-background text-foreground font-sans antialiased;
   }
+
+  .dark, .light, :root {
+  }
+
+  /* Smooth transition for all major UI elements */
+  .card,
+  .bg-card,
+  .bg-background,
+  .bg-primary,
+  .bg-secondary,
+  .bg-accent,
+  .border,
+  .text-foreground,
+  .text-primary,
+  .text-secondary,
+  .text-accent,
+  .button,
+  .input,
+  .select,
+  .textarea {
+  }
 }
 
 @layer components {
