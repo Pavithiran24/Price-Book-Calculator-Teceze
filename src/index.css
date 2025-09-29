@@ -82,54 +82,53 @@ All colors MUST be HSL for consistent theming
   }
 
   .dark {
-    /* Premium Dark Theme */
-    --background: 240 12% 10%;
+    /* Lighter dark theme - Premium dark palette */
+    --background: 240 10% 18%;
     --foreground: 240 5% 96%;
 
-    --card: 240 12% 12%;
+    --card: 240 10% 22%;
     --card-foreground: 240 5% 96%;
 
-    --popover: 240 12% 12%;
+    --popover: 240 10% 22%;
     --popover-foreground: 240 5% 96%;
 
-    --primary: 240 100% 58%;
+    --primary: 240 100% 68%;
     --primary-foreground: 240 10% 4%;
-    --primary-soft: 240 100% 16%;
-    --primary-hover: 240 100% 62%;
+    --primary-soft: 240 100% 28%;
+    --primary-hover: 240 100% 75%;
 
-    --secondary: 240 12% 14%;
+    --secondary: 240 10% 28%;
     --secondary-foreground: 240 5% 96%;
 
-    --muted: 240 12% 14%;
-    --muted-foreground: 240 5% 65%;
+    --muted: 240 10% 28%;
+    --muted-foreground: 240 5% 75%;
 
-    --accent: 217 91% 58%;
+    --accent: 217 91% 68%;
     --accent-foreground: 240 10% 4%;
-    --accent-soft: 217 91% 12%;
+    --accent-soft: 217 91% 28%;
 
-    --success: 142 76% 42%;
+    --success: 142 76% 52%;
     --success-foreground: 240 10% 4%;
-    --success-soft: 142 76% 12%;
+    --success-soft: 142 76% 28%;
 
-    --warning: 38 92% 52%;
+    --warning: 38 92% 62%;
     --warning-foreground: 240 10% 4%;
-    --warning-soft: 38 92% 12%;
+    --warning-soft: 38 92% 28%;
 
-    --destructive: 0 84% 62%;
+    --destructive: 0 84% 72%;
     --destructive-foreground: 240 10% 4%;
 
-    --border: 240 12% 16%;
-    --input: 240 12% 16%;
-    --ring: 240 100% 58%;
-
-    --sidebar-background: 240 7% 12%;
+    --border: 240 10% 32%;
+    --input: 240 10% 32%;
+    --ring: 240 100% 70%;
+    --sidebar-background: 240 5.9% 28%;
     --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary: 224.3 76.3% 58%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 6% 14%;
+    --sidebar-accent: 240 3.7% 32%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 6% 14%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-border: 240 3.7% 32%;
+    --sidebar-ring: 217.2 91.2% 69.8%;
   }
 }
 

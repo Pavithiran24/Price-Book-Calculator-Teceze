@@ -362,8 +362,8 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({ data, headers, o
               <Input
                 id="duration"
                 type="number"
-                min="0.5"
-                step="0.5"
+                min="1"
+                step="1"
                 value={duration}
                 onChange={(e) => setDuration(e.target.value)}
                 placeholder="1"
