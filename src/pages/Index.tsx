@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+
+// Main page for the Price Book Calculator app
+// Handles Excel upload, calculation, and UI layout
 import { Calculator, FileSpreadsheet, Zap, Shield, X } from 'lucide-react';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { ExcelUpload } from '@/components/ExcelUpload';
@@ -28,43 +31,49 @@ interface CalculationResult {
 }
 
 const Index = () => {
-// Index page: Main entry for Price Book Calculator app. Handles Excel upload, calculation, and UI layout.
+  // Index page: Main entry for Price Book Calculator app. Handles Excel upload, calculation, and UI layout.
+  // State for uploaded Excel data
   const [excelData, setExcelData] = useState<ExcelData[]>([]);
+  // State for Excel headers
   const [headers, setHeaders] = useState<string[]>([]);
+  // State for calculation result
   const [calculation, setCalculation] = useState<CalculationResult | null>(null);
+  // State for welcome popup
   const [showWelcome, setShowWelcome] = useState(false);
 
   // Show welcome popup on component mount
+  // Show welcome popup on mount, auto-hide after 3 seconds
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowWelcome(true);
     }, 500);
-
-    // Auto hide after 3 seconds
     const hideTimer = setTimeout(() => {
       setShowWelcome(false);
     }, 3000);
-
     return () => {
       clearTimeout(timer);
       clearTimeout(hideTimer);
     };
   }, []);
 
+  // Handler for when Excel data is loaded
   const handleDataLoaded = (data: ExcelData[], loadedHeaders: string[]) => {
     setExcelData(data);
     setHeaders(loadedHeaders);
     setCalculation(null); // Reset calculation when new data is loaded
   };
 
+  // Handler for when calculation is complete
   const handleCalculationComplete = (result: CalculationResult) => {
     setCalculation(result);
   };
 
+  // Handler to reset calculation
   const handleReset = () => {
     setCalculation(null);
   };
 
+  // Feature list for the landing page
   const features = [
     {
       icon: FileSpreadsheet,
@@ -88,9 +97,10 @@ const Index = () => {
     },
   ];
 
+  // Main render
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-primary-soft/20 to-accent-soft/20">
-      {/* Welcome Popup */}
+  {/* Welcome Popup - shows on first load */}
       {showWelcome && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-sm animate-in fade-in duration-300">
           <div className="relative mx-4 max-w-2xl w-full">
@@ -147,7 +157,7 @@ const Index = () => {
         </div>
       )}
 
-      {/* Header */}
+  {/* Header - App title and theme toggle */}
       <header className="border-b border-border/50 bg-card/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
@@ -171,7 +181,7 @@ const Index = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8">
-        {/* Hero Section */}
+        {/* Hero Section - shown when no Excel data uploaded */}
         {excelData.length === 0 && (
           <div className="text-center mb-12 animate-fade-in">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
@@ -203,7 +213,7 @@ const Index = () => {
           </div>
         )}
 
-        {/* Main Content */}
+  {/* Main Content - Excel upload, data preview, calculator, and summary */}
         <div className="space-y-8">
           {/* Step 1: Excel Upload */}
           {excelData.length === 0 ? (
@@ -212,14 +222,14 @@ const Index = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Left Column */}
+              {/* Left Column - Data preview and calculator form */}
               <div className="space-y-8">
-                {/* Data Preview */}
+                {/* Data Preview - shows uploaded Excel data */}
                 <div className="animate-fade-in">
                   <DataPreview data={excelData} headers={headers} />
                 </div>
 
-                {/* Calculator Form */}
+                {/* Calculator Form - user inputs for calculation */}
                 <div className="animate-slide-up">
                   <CalculatorForm 
                     data={excelData} 
@@ -250,9 +260,9 @@ const Index = () => {
                 )}
               </div>
 
-              {/* Right Column */}
+              {/* Right Column - Price summary and empty state */}
               <div className="space-y-8">
-                {/* Price Summary */}
+                {/* Price Summary - shows calculation breakdown and export */}
                 {calculation && (
                   <div className="animate-scale-in">
                     <PriceSummary 
@@ -280,7 +290,7 @@ const Index = () => {
         </div>
       </main>
 
-      {/* Footer */}
+  {/* Footer - credits and privacy note */}
       <footer className="border-t border-border/50 bg-card/80 backdrop-blur-sm mt-16">
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">
